@@ -34,12 +34,14 @@ public class MinHeap<T extends Comparable<T> >{
         positionTable.put(minheap.get(pos1),pos1);
         positionTable.put(minheap.get(pos2),pos2);
     }
+
     public void Insert(T item){
         minheap.add(item);
         positionTable.put(item,size);
         size++;
         decreasekey(size-1);
     }
+
     public void decreasekey(int pos){
         int currentpos=pos;
         while (minheap.get(currentpos).compareTo(minheap.get(Parent(currentpos)))<0){

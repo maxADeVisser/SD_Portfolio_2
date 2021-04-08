@@ -1,27 +1,29 @@
-import java.util.jar.JarEntry; //bliver ikke brugt endnu
-
 public class Main {
 
     public static void main(String[] args) {
         AdjacencyGraph Cities = new AdjacencyGraph(); //initializes the adjacency graph
 
-        Vertex Eskildstrup = new Vertex("Eskildsstrup");   Cities.addVertex(Eskildstrup);
-        Vertex Haslev = new Vertex("Haslev");              Cities.addVertex(Haslev);
-        Vertex Holbæk = new Vertex( "Holbæk");             Cities.addVertex(Holbæk);
-        Vertex Jærgerspris = new Vertex("Jærgerspris");    Cities.addVertex(Jærgerspris);
-        Vertex Kalundborg = new Vertex("Kalundborg");      Cities.addVertex(Kalundborg);
-        Vertex Korsør = new Vertex( "Korsør");             Cities.addVertex(Korsør);
-        Vertex Køge = new Vertex("Køge");                  Cities.addVertex(Køge);
-        Vertex Maribo = new Vertex("Maribo");              Cities.addVertex(Maribo);
-        Vertex Næstved = new Vertex("Næstved");            Cities.addVertex(Næstved);
-        Vertex Ringsted = new Vertex("Ringsted");          Cities.addVertex(Ringsted);
-        Vertex Slagelse = new Vertex("Slagelse");          Cities.addVertex(Slagelse);
-        Vertex Nykøbing_F = new Vertex("Nykøbing F");      Cities.addVertex(Nykøbing_F);
-        Vertex Vordingborg = new Vertex("Vordingborg");    Cities.addVertex(Vordingborg);
-        Vertex Roskilde = new Vertex("Roskilde");          Cities.addVertex(Roskilde);
-        Vertex Sorø = new Vertex("Sorø");                  Cities.addVertex(Sorø);
-        Vertex Nakskov = new Vertex("Nakskov");            Cities.addVertex(Nakskov);
+        Node Eskildstrup = new Node("Eskildsstrup");   Cities.addNode(Eskildstrup);
+        Node Haslev = new Node("Haslev");              Cities.addNode(Haslev);
+        Node Holbæk = new Node( "Holbæk");             Cities.addNode(Holbæk);
+        Node Jærgerspris = new Node("Jærgerspris");    Cities.addNode(Jærgerspris);
+        Node Kalundborg = new Node("Kalundborg");      Cities.addNode(Kalundborg);
+        Node Korsør = new Node( "Korsør");             Cities.addNode(Korsør);
+        Node Køge = new Node("Køge");                  Cities.addNode(Køge);
+        Node Maribo = new Node("Maribo");              Cities.addNode(Maribo);
+        Node Næstved = new Node("Næstved");            Cities.addNode(Næstved);
+        Node Ringsted = new Node("Ringsted");          Cities.addNode(Ringsted);
+        Node Slagelse = new Node("Slagelse");          Cities.addNode(Slagelse);
+        Node Nykøbing_F = new Node("Nykøbing F");      Cities.addNode(Nykøbing_F);
+        Node Vordingborg = new Node("Vordingborg");    Cities.addNode(Vordingborg);
+        Node Roskilde = new Node("Roskilde");          Cities.addNode(Roskilde);
+        Node Sorø = new Node("Sorø");                  Cities.addNode(Sorø);
+        Node Nakskov = new Node("Nakskov");            Cities.addNode(Nakskov);
 
+<<<<<<< Updated upstream
+=======
+        // ------- EDGES -----
+>>>>>>> Stashed changes
         Cities.addEdge(Eskildstrup,Maribo,28);             Cities.addEdge(Jærgerspris,Sorø, 51);
         Cities.addEdge(Eskildstrup,Nykøbing_F, 13);        Cities.addEdge(Kalundborg,Ringsted, 62);
         Cities.addEdge(Eskildstrup,Vordingborg,24);        Cities.addEdge(Kalundborg,Roskilde, 70);
@@ -48,7 +50,7 @@ public class Main {
 
         //------------------------------OPERATIONS-----------------------------//
 
-        Cities.PrintGraph();
+        //Cities.PrintGraph();
 
     }
 }
