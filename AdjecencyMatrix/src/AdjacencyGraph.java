@@ -88,8 +88,6 @@ public class AdjacencyGraph {
 
             if(!currentNode.hasBeenVisited){ //If current node HASN'T been visited execute following ...
 
-                currentNode.hasBeenVisited = true; // update that we now have visited currentNode
-
                 // Iterate through all toNodes and the weight of their edge:
                 for (int i = 0; i < currentNode.getOutgoingEdgesFromNode().size(); i++) {
                     Node toNode = currentNode.getOutgoingEdgesFromNode().get(i).getToNote();
@@ -102,6 +100,7 @@ public class AdjacencyGraph {
                         citiesPQ.offer(toNode); // add the toNode to the PQ
                     }
                 }
+                currentNode.hasBeenVisited = true; // update that we now have visited currentNode
                 MST += currentNode.distance; // add the currentNode's distance to the MST sum
             }
         }
