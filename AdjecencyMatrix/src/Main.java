@@ -50,7 +50,8 @@ public class Main {
 
         cities.primsUsingPQ();
         //cities.primsUsingMinHeap();
+        cities.printGraph();
         cities.printMST();
-        //cities.printGraph();
+
     }
 }
