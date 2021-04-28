@@ -25,7 +25,7 @@ public class AdjacencyGraph {
     }
 
 
-    public void printGraph(){ //Print statement for all connections for a given city, with kilometers.
+    public void printGraph(){ //Print statement for all connections in the graph, with kilometers.
         for (int i = 0; i < nodes.size(); i++) {
             Node currentNode = nodes.get(i);
             System.out.println("Connections from " + currentNode.getNodeName() + " are:");
@@ -37,8 +37,11 @@ public class AdjacencyGraph {
         }
     }
 
+    //Below code isen't used, because we used PriorityQue instead of MinHeap.
+    //But we left in to be able to see our thought process and how we tried making it work.
+    /*
     int MSTminheap = 0;
-    public void primsUsingMinHeap(){ //Isen't activated, as we used PriorityQue instead of prims algorithm
+    public void primsUsingMinHeap(){
         MinHeap<Node> citiesMinHeap = new MinHeap<Node>();
 
         if (nodes.size() > 0) { //Creating a node at the first index in the node list, with a distance of 0.
@@ -61,41 +64,45 @@ public class AdjacencyGraph {
                         citiesMinHeap.Insert(currentToNode);
                     }
                 }
-
                 currentNode.hasBeenVisited = true;
                 MSTminheap += currentNode.distance; //sum of MST
             }
         }
     }
+    */
 
-    int MST = 0; //Empty variable only used for primsUsingPQ method
-    public void primsUsingPQ(){
-        PriorityQueue <Node> citiesPQ = new PriorityQueue<Node>();
+    int MST = 0; // Variable used later to store the MST total distance
 
-        if (nodes.size() > 0) { //Creating a node at the first index in the node list, with a distance of 0.
+    public void primsUsingPQ(){ // Runs prims algorithm using a PQ
+        PriorityQueue <Node> citiesPQ = new PriorityQueue<Node>(); // initiates an empty PQ holding nodes
+
+        if (nodes.size() > 0) { //Creating a node at the first index in the node list, with a distance of 0 if the PQ is not empty
             nodes.get(0).distance = 0;
-            citiesPQ.offer(nodes.get(0));
+            citiesPQ.offer(nodes.get(0)); // add node to PQ
         } else {
             System.out.println("The adjacency graph is empty");
         }
 
-        while(!citiesPQ.isEmpty()){ //As long as the list aint empty, do following...
-            Node currentNode = citiesPQ.poll();
+        while(!citiesPQ.isEmpty()){ //As long as the PQ is not empty, do following...
+            Node currentNode = citiesPQ.poll(); // currentNode is the node with the smallest distance available, at each iteration in the while-loop
 
-            if(!currentNode.hasBeenVisited){ //If current node havent been visited execute following ...
-                for (int i = 0; i < currentNode.getOutgoingEdgesFromNode().size(); i++) { //Iterate through all nodes connected to current node
+            if(!currentNode.hasBeenVisited){ //If current node HASN'T been visited execute following ...
 
+                currentNode.hasBeenVisited = true; // update that we now have visited currentNode
+
+                // Iterate through all toNodes and the weight of their edge:
+                for (int i = 0; i < currentNode.getOutgoingEdgesFromNode().size(); i++) {
                     Node toNode = currentNode.getOutgoingEdgesFromNode().get(i).getToNote();
                     Integer currentEdgeWeight = currentNode.getOutgoingEdgesFromNode().get(i).getWeight();
 
-                    if((!toNode.hasBeenVisited) && currentEdgeWeight < toNode.distance){ //If any nodes connected to current node has a shorter distance, replace current node, set is a previous as iterating through
-                        toNode.distance = currentEdgeWeight;
-                        toNode.predecessorNode = currentNode;
-                        citiesPQ.offer(toNode);
+                    // If any toNodes from currentNode haven't been visited yet and is smaller than currentEdgeWeight ->
+                    if((!toNode.hasBeenVisited) && currentEdgeWeight < toNode.distance){
+                        toNode.distance = currentEdgeWeight; // update the toNode distance to currentEdgeWeight
+                        toNode.predecessorNode = currentNode; // update the predecessor from toNode to be the currentNode
+                        citiesPQ.offer(toNode); // add the toNode to the PQ
                     }
                 }
-                currentNode.hasBeenVisited = true;
-                MST += currentNode.distance; //sum af MST
+                MST += currentNode.distance; // add the currentNode's distance to the MST sum
             }
         }
     }
@@ -104,8 +111,8 @@ public class AdjacencyGraph {
         System.out.println("The Minimum Spanning Tree is connected as such: \n");
         for (int i = 0; i < nodes.size(); i++) {
             Node predecessorNode = nodes.get(i).predecessorNode;
-            if (predecessorNode != null) { //since all Nodes initially dont have a predecessor node initalized, we can sort the ones that has
-                //been givin a predecessor in Prims algorithm (an so, we will know that it is part of the MST).
+            if (predecessorNode != null) { //since all Nodes initially dont have a predecessor node initialized, we can sort the ones that has
+                //been given a predecessor in Prims algorithm, and so we will know that it is part of the MST.
                 System.out.println(predecessorNode.getNodeName() +
                         " to " + nodes.get(i).getNodeName() + " Edge Weight: " +
                         nodes.get(i).distance + "km");
@@ -120,15 +127,15 @@ public class AdjacencyGraph {
 class Node  implements Comparable<Node>{
     //---ATTRIBUTES---
     String nodeName;
-    ArrayList<Edge> outgoingEdgesFromNode; //list of edges going out from the vertex
-    Integer distance = Integer.MAX_VALUE; //Variabel representing the distance to the node which is initialized as infinity except the choosen starting node (which is 0)
+    ArrayList<Edge> outgoingEdgesFromNode; //list of edges going out from the node
+    Integer distance = Integer.MAX_VALUE; //Variable representing the distance to the node which is initialized as infinity except the chosen starting node (which is 0 initially)
     Node predecessorNode = null; //used to store the previous Node to the current one, when traversing through the tree in Prims algorithm
-    Boolean hasBeenVisited = false;
+    Boolean hasBeenVisited = false; // a boolean used to check if the note has been visited or not
 
     //---METHODS---
-    public Node(String name) { //constructor for the vertex
+    public Node(String name) { //constructor for the node
         nodeName = name;
-        outgoingEdgesFromNode = new ArrayList<>(); //list of edges going out from this vertex
+        outgoingEdgesFromNode = new ArrayList<>(); //list of edges going out from this node
     }
 
     public void addOutgoingEdge(Edge e) {
@@ -136,18 +143,15 @@ class Node  implements Comparable<Node>{
     }
 
     @Override
-    public int compareTo(Node o) { //utilityfunction used to compare distances between nodes
-        //how the function is used: firstNode.compareTo(secondNode)
+    public int compareTo(Node o) { //utility function used to compare distances between nodes
         if (this.distance < o.distance)
-            return -1; //resembels that the distance from firstNode is SMALLER than distance from secondNote
+            return -1; //resembles that the distance from firstNode is SMALLER than distance from secondNote
         if (this.distance > o.distance)
-            return 1; //resembels that the distance from firstNode is LARGER than distance from secondNote
+            return 1; //resembles that the distance from firstNode is LARGER than distance from secondNote
         return 0; //resembles if they are of equal value
     }
 
-
-
-    //---GETTERS AND SETTERS
+    //---GETTERS AND SETTERS FOR NODE CLASS
     public String getNodeName() {
         return nodeName;
     }
@@ -171,7 +175,7 @@ class Edge{
         this.fromNote.addOutgoingEdge(this); //adds the current edge created to the fromNode's outgoindEdgeList
     }
 
-    //---GETTERS AND SETTERS
+    //---GETTERS AND SETTERS FOR NODE EDGE CLASS
     public Node getToNote() {
         return toNote;
     }
