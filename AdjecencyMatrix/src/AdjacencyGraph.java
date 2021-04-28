@@ -75,6 +75,8 @@ public class AdjacencyGraph {
         if (nodes.size() > 0) {
             nodes.get(0).distance = 0;
             citiesPQ.offer(nodes.get(0));
+        } else {
+            System.out.println("The adjacency graph is empty");
         }
 
         while(!citiesPQ.isEmpty()){
@@ -92,19 +94,16 @@ public class AdjacencyGraph {
                         citiesPQ.offer(toNode);
                     }
                 }
-
                 currentNode.hasBeenVisited = true;
                 MST += currentNode.distance; //sum af MST
             }
         }
     }
 
-
     public void printMST(){
         System.out.println("The Minimum Spanning Tree is connected as such: \n");
         for (int i = 0; i < nodes.size(); i++) {
             Node predecessorNode = nodes.get(i).predecessorNode;
-
             if (predecessorNode != null) { //since all Nodes initially dont have a predecessor node initalized, we can sort the ones that has
                 //been givin a predecessor in Prims algorithm (an so, we will know that it is part of the MST).
                 System.out.println(predecessorNode.getNodeName() +
@@ -114,7 +113,7 @@ public class AdjacencyGraph {
         }
         System.out.println("\nTotal distance covered by the MST: " + MST + " km");
         System.out.println("Total Cost of the grid: " + MST*100000 + " kr");
-    }
+    } //den metode som de andre bruger og som jeg arbejder på at lave en erstatning til
 }
 
 //------------------------NODE-------------------------------
@@ -122,17 +121,17 @@ class Node  implements Comparable<Node>{
     //---ATTRIBUTES---
     String nodeName;
     ArrayList<Edge> outgoingEdgesFromNode; //list of edges going out from the vertex
-    Integer distance = Integer.MAX_VALUE; //Variabel representing the distance to the node which is initialized as infinity except the choosen starting node (which is 0)
+    Integer distance = Integer.MAX_VALUE;
     Node predecessorNode = null; //used to store the previous Node to the current one, when traversing through the tree in Prims algorithm
     Boolean hasBeenVisited = false;
 
     //---METHODS---
-    public Node(String name) { //constructor for the vertex
+    public Node(String name) { //constructor
         nodeName = name;
-        outgoingEdgesFromNode = new ArrayList<>(); //list of edges going out from this vertex
+        outgoingEdgesFromNode = new ArrayList<>();
     }
 
-    public void addOutgoingEdge(Edge e) { //adds a edge to the list of edges going out from this Vertex
+    public void addOutgoingEdge(Edge e) {
         outgoingEdgesFromNode.add(e);
     }
 
