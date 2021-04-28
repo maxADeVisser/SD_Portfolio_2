@@ -25,7 +25,7 @@ public class AdjacencyGraph {
     }
 
 
-    public void printGraph(){
+    public void printGraph(){ //Print statement for all connections for a given city, with kilometers.
         for (int i = 0; i < nodes.size(); i++) {
             Node currentNode = nodes.get(i);
             System.out.println("Connections from " + currentNode.getNodeName() + " are:");
@@ -37,25 +37,25 @@ public class AdjacencyGraph {
         }
     }
 
-    int MSTminheap = 0; //Brugt kun til prismUsingHeap
-    public void primsUsingMinHeap(){
+    int MSTminheap = 0;
+    public void primsUsingMinHeap(){ //Isen't activated, as we used PriorityQue instead of prims algorithm
         MinHeap<Node> citiesMinHeap = new MinHeap<Node>();
 
-        if (nodes.size() > 0) {
+        if (nodes.size() > 0) { //Creating a node at the first index in the node list, with a distance of 0.
             nodes.get(0).distance = 0;
             citiesMinHeap.Insert(nodes.get(0));
         }
 
-        while(!citiesMinHeap.isEmpty()){
+        while(!citiesMinHeap.isEmpty()){ //As long as the list aint empty, do following...
             Node currentNode = citiesMinHeap.extractMin();
 
-            if(!currentNode.hasBeenVisited){
-                for (int i = 0; i < currentNode.getOutgoingEdgesFromNode().size(); i++) {
+            if(!currentNode.hasBeenVisited){ //If current node havent been visited execute following ...
+                for (int i = 0; i < currentNode.getOutgoingEdgesFromNode().size(); i++) { //Iterate through all nodes connected to current node
 
                     Node currentToNode = currentNode.getOutgoingEdgesFromNode().get(i).getToNote();
                     Integer currentEdgeWeight = currentNode.getOutgoingEdgesFromNode().get(i).getWeight();
 
-                    if((!currentToNode.hasBeenVisited) && currentEdgeWeight < currentToNode.distance){
+                    if((!currentToNode.hasBeenVisited) && currentEdgeWeight < currentToNode.distance){ //If any nodes connected to current node has a shorter distance, replace current node, set is a previous as iterating through
                         currentToNode.distance = currentEdgeWeight;
                         currentToNode.predecessorNode = currentNode;
                         citiesMinHeap.Insert(currentToNode);
@@ -63,32 +63,32 @@ public class AdjacencyGraph {
                 }
 
                 currentNode.hasBeenVisited = true;
-                MSTminheap += currentNode.distance; //sum af MST
+                MSTminheap += currentNode.distance; //sum of MST
             }
         }
     }
 
-    int MST = 0; //Brugt kun til primsUsingPQ
+    int MST = 0; //Empty variable only used for primsUsingPQ method
     public void primsUsingPQ(){
         PriorityQueue <Node> citiesPQ = new PriorityQueue<Node>();
 
-        if (nodes.size() > 0) {
+        if (nodes.size() > 0) { //Creating a node at the first index in the node list, with a distance of 0.
             nodes.get(0).distance = 0;
             citiesPQ.offer(nodes.get(0));
         } else {
             System.out.println("The adjacency graph is empty");
         }
 
-        while(!citiesPQ.isEmpty()){
+        while(!citiesPQ.isEmpty()){ //As long as the list aint empty, do following...
             Node currentNode = citiesPQ.poll();
 
-            if(!currentNode.hasBeenVisited){
-                for (int i = 0; i < currentNode.getOutgoingEdgesFromNode().size(); i++) {
+            if(!currentNode.hasBeenVisited){ //If current node havent been visited execute following ...
+                for (int i = 0; i < currentNode.getOutgoingEdgesFromNode().size(); i++) { //Iterate through all nodes connected to current node
 
                     Node toNode = currentNode.getOutgoingEdgesFromNode().get(i).getToNote();
                     Integer currentEdgeWeight = currentNode.getOutgoingEdgesFromNode().get(i).getWeight();
 
-                    if((!toNode.hasBeenVisited) && currentEdgeWeight < toNode.distance){
+                    if((!toNode.hasBeenVisited) && currentEdgeWeight < toNode.distance){ //If any nodes connected to current node has a shorter distance, replace current node, set is a previous as iterating through
                         toNode.distance = currentEdgeWeight;
                         toNode.predecessorNode = currentNode;
                         citiesPQ.offer(toNode);
@@ -100,7 +100,7 @@ public class AdjacencyGraph {
         }
     }
 
-    public void printMST(){
+    public void printMST(){ //Print statement for MST
         System.out.println("The Minimum Spanning Tree is connected as such: \n");
         for (int i = 0; i < nodes.size(); i++) {
             Node predecessorNode = nodes.get(i).predecessorNode;
@@ -113,7 +113,7 @@ public class AdjacencyGraph {
         }
         System.out.println("\nTotal distance covered by the MST: " + MST + " km");
         System.out.println("Total Cost of the grid: " + MST*100000 + " kr");
-    } //den metode som de andre bruger og som jeg arbejder på at lave en erstatning til
+    }
 }
 
 //------------------------NODE-------------------------------
@@ -121,14 +121,14 @@ class Node  implements Comparable<Node>{
     //---ATTRIBUTES---
     String nodeName;
     ArrayList<Edge> outgoingEdgesFromNode; //list of edges going out from the vertex
-    Integer distance = Integer.MAX_VALUE;
+    Integer distance = Integer.MAX_VALUE; //Variabel representing the distance to the node which is initialized as infinity except the choosen starting node (which is 0)
     Node predecessorNode = null; //used to store the previous Node to the current one, when traversing through the tree in Prims algorithm
     Boolean hasBeenVisited = false;
 
     //---METHODS---
-    public Node(String name) { //constructor
+    public Node(String name) { //constructor for the vertex
         nodeName = name;
-        outgoingEdgesFromNode = new ArrayList<>();
+        outgoingEdgesFromNode = new ArrayList<>(); //list of edges going out from this vertex
     }
 
     public void addOutgoingEdge(Edge e) {
